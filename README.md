@@ -121,7 +121,9 @@ To create a flexible infrastructure for generating fast reports, we need to defi
 ![erd.png](img%2Ferd.png)
 
 ### Macro
-The `generate_store_status` macro processes events to determine the current status of products in stores. It goes through the following steps:
+The `generate_store_status` macro ensures that the logic for generating store status is consistent while allowing 
+flexibility in specifying different time conditions. It processes events to determine the current status of products in stores. 
+It goes through the following steps:  
 
 1. Extracts relevant product change events from the `stg_store_events` table.
 2. Ranks changes to identify the most recent updates.
