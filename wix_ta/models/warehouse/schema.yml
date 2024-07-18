@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: dim_date
+    description: "Dimension table for dates."
+    columns:
+      - name: date_id
+        description: "Primary key for the date dimension."
+        data_tests:
+          - unique
+          - not_null
+      - name: year
+        description: "Year of the date."
+      - name: month
+        description: "Month of the date."
+      - name: day
+        description: "Day of the date."
+      - name: quarter
+        description: "Quarter of the year."
+    primary_key: date_id
+  - name: dim_product
+    description: "Dimension table for products."
+    columns:
+      - name: store_id
+        description: "Composite key for the product dimension."
+        data_tests:
+          - not_null
+      - name: product_id
+        description: "Composite key for the product dimension."
+        data_tests:
+          - not_null
+      - name: product_name
+        description: "Name of the product."
+      - name: product_properties
+        description: "Properties of the product."
+      - name: status
+        description: "Status of the product."
+    primary_key: product_id,product_id
+  - name: dim_store
+    description: "Dimension table for stores."
+    columns:
+      - name: store_id
+        description: "Primary key for the store dimension."
+        data_tests:
+          - unique
+          - not_null
+    primary_key: store_id
+  - name: dim_user
+    description: "Dimension table for users."
+    columns:
+      - name: user_id
+        description: "Primary key for the user dimension."
+        data_tests:
+          - unique
+          - not_null
+    primary_key: user_id
+  - name: fct_user_store_actions
+    description: "Fact table for user actions in stores."
+    columns:
+      - name: pk_fct_user_store_actions
+        description: primary key
+      - name: timestamp
+        description: "Timestamp of the action."
+      - name: date_id
+        description: "Foreign key to the date dimension."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_id
+      - name: user_id
+        description: "Foreign key to the user dimension."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_user')
+              field: user_id
+      - name: store_id
+        description: "Foreign key to the store dimension."
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_store')
+              field: store_id
+      - name: store_action
+        description: "Type of action performed by the user."
+      - name: product_id
+        description: "Foreign key to the product dimension."
+        data_tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_id
+    primary_key: pk_fct_user_store_actions
+    foreign_keys:
+      - user_id: dim_user.user_id
+      - store_id: dim_store.store_id
+      - product_id: dim_product.product_id
+      - date_id: dim_date.date_id

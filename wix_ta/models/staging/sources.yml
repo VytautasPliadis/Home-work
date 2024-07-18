@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: raw_data_source
+    description: "Raw data source"
+    database: wix
+    schema: public
+    tables:
+      - name: raw_data
+        columns:
+          - name: timestamp
+            data_tests:
+              - not_null
+          - name: user_id
+            data_tests:
+              - not_null
+          - name: store_id
+            data_tests:
+              - not_null
+          - name: digest
+            data_tests:
+              - not_null
